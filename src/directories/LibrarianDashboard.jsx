@@ -85,17 +85,6 @@ export default function LibrarianDashboard() {
     saveLoans(updated);
   };
 
-  // for librarians to see borrow requests
-  const [requests, setRequests] = useState([]);
-
-  useEffect(() => {
-    const updatedBooks = recalculateBookHoldCounts();
-    setBooks(updatedBooks);
-    setLoans(getLoans());
-    const existingRequests = JSON.parse(localStorage.getItem("borrowRequests")) || [];
-    setRequests(existingRequests);
-  }, []);
-
   // return loans
   const handleReturnLoan = (loan) => {
     // 1. Update loan status
@@ -125,89 +114,9 @@ export default function LibrarianDashboard() {
     setBooks(resyncedBooks);
   };
 
-
-// loan management - borrow request
-const handleApproveRequest = (request) => {
-  const newLoans = request.bookIds.map(bookId => {
-    const loanDate = new Date();
-    const dueDate = new Date();
-    dueDate.setDate(loanDate.getDate() + 14);
-
-    return {
-      id: uuidv4(),
-      bookId,
-      memberName: request.memberName,
-      loanDate: loanDate.toISOString().split("T")[0],
-      dueDate: dueDate.toISOString().split("T")[0],
-      status: "Active",
-    };
-  });
-
-  // Update loans
-  const updatedLoans = [...loans, ...newLoans];
-  setLoans(updatedLoans);
-  saveLoans(updatedLoans);
-
-  // Update books (decrease copies)
-  const updatedBooks = books.map(book => {
-    if (request.bookIds.includes(book.id) && book.copies > 0) {
-      const newCopies = book.copies - 1;
-      return {
-        ...book,
-        copies: newCopies,
-        available: newCopies > 0,
-      };
-    }
-    return book;
-  });
-  setBooks(updatedBooks);
-  saveBooks(updatedBooks);
-
-  // Remove request
-  const updatedRequests = requests.filter(r => r.id !== request.id);
-  setRequests(updatedRequests);
-  localStorage.setItem("borrowRequests", JSON.stringify(updatedRequests));
-};
-
   // edit , cancel list
   const handleCancelEdit = () => setEditingBook(null);
   const handleCancelLoanEdit = () => setEditingLoan(null);
-
-  // total, on hold, available copies
-  useEffect(() => {
-    const allBooks = getBooks();
-    const allLoans = getLoans();
-    const allRequests = JSON.parse(localStorage.getItem("borrowRequests")) || [];
-
-    // Step 1: build on-hold copy count map
-    const holdCountMap = {};
-
-    // Count from loans
-    allLoans.forEach(loan => {
-      if (loan.status === "Active") {
-        holdCountMap[loan.bookId] = (holdCountMap[loan.bookId] || 0) + 1;
-      }
-    });
-
-    // Count from borrow requests
-    allRequests.forEach(req => {
-      req.bookIds.forEach(bookId => {
-        holdCountMap[bookId] = (holdCountMap[bookId] || 0) + 1;
-      });
-    });
-
-    // Step 2: apply onHoldCopies to books
-    const updatedBooks = allBooks.map(book => ({
-      ...book,
-      onHoldCopies: holdCountMap[book.id] || 0,
-    }));
-
-    // Step 3: save and set state
-    saveBooks(updatedBooks);
-    setBooks(updatedBooks);
-    setLoans(allLoans);
-    setRequests(allRequests);
-  }, []);
 
   // sort book list by genre
   const sortedBooks = [...books].sort((a, b) => {
@@ -230,25 +139,5 @@ return (
     <h2 className="text-xl font-semibold mt-8 mb-2">Loan Management</h2>
     <LoanForm onSubmit={handleSaveLoan} books={books} loan={editingLoan} onCancel={handleCancelLoanEdit}/>
     <LoanList loans={sortedLoans} books={books} onEdit={setEditingLoan} onDelete={handleDeleteLoan} onReturn={handleReturnLoan} />
-    <h2 className="text-xl font-semibold mt-8 mb-2">Borrow Requests</h2>
-    {requests.map((req) => (
-      <div key={req.id} className="border p-4 rounded mb-2 bg-yellow-50">
-        <p><strong>Member:</strong> {req.memberName}</p>
-        <p><strong>Date:</strong> {req.requestDate}</p>
-        <p><strong>Books:</strong></p>
-        <ul className="list-disc list-inside ml-4">
-          {req.bookIds.map(id => {
-            const book = books.find(b => b.id === id);
-            return <li key={id}>{book ? book.title : "(Unknown Book)"}</li>;
-          })}
-        </ul>
-        <button
-          onClick={() => handleApproveRequest(req)}
-          className="mt-2 inline-block bg-blue-600 text-white px-3 py-1 rounded"
-        >
-          Approve Request
-        </button>
-      </div>
-    ))}
   </div>
 );}

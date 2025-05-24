@@ -5,7 +5,6 @@ import './App.css'
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LibrarianDashboard from "./directories/LibrarianDashboard";
-import MemberDashboard from "./directories/MemberDashboard";
 import Login from "./directories/LoginPage";
 import { seedUsers } from "./utils/dataService";
 
@@ -18,7 +17,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/librarian" element={<LibrarianDashboard />} />
-        <Route path="/member" element={<MemberDashboard />} />
       </Routes>
     </Router>
   );
