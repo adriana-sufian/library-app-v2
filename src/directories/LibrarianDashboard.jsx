@@ -14,6 +14,8 @@ export default function LibrarianDashboard() {
   const [loans, setLoans] = useState([]);
   const [editingLoan, setEditingLoan] = useState(null);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     seedBooks();
     setBooks(getBooks());
@@ -119,9 +121,17 @@ export default function LibrarianDashboard() {
   const handleCancelLoanEdit = () => setEditingLoan(null);
 
   // sort book list by genre
-  const sortedBooks = [...books].sort((a, b) => {
-    return a.genre.localeCompare(b.genre);
-  });
+  const sortedBooks = [...books]
+  .filter(b => {
+    const term = searchTerm.toLowerCase();
+    return (
+      b.title.toLowerCase().includes(term) ||
+      b.author.toLowerCase().includes(term) ||
+      b.genre.toLowerCase().includes(term) ||
+      b.isbn.toLowerCase().includes(term)
+    );
+  })
+  .sort((a, b) => a.genre.localeCompare(b.genre));
 
   // sort loan list by genre
   const sortedLoans = [...loans].sort((a, b) => {
@@ -134,6 +144,13 @@ export default function LibrarianDashboard() {
 return (
   <div className="max-w-2xl mx-auto p-4">
     <h1 className="text-2xl font-bold mb-4">Library Book Management</h1>
+    <input
+      type="text"
+      placeholder="Search by title, author, genre, or ISBN"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="w-full p-2 border mb-4"
+    />
     <BookForm onSubmit={handleSave} book={editingBook} onCancel={handleCancelEdit}/>
     <BookList books={sortedBooks} onEdit={handleEdit} onDelete={handleDelete} />
     <h2 className="text-xl font-semibold mt-8 mb-2">Loan Management</h2>
