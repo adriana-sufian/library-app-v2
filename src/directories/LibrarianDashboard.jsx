@@ -142,28 +142,48 @@ export default function LibrarianDashboard() {
 
 
 return (
-  <div className="max-w-2xl mx-auto p-4">
-    <h1 className="text-2xl font-bold mb-4">Library Book Management</h1>
-    <input
-      type="text"
-      placeholder="Search by title, author, genre, or ISBN"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className="w-full p-2 border mb-4"
-    />
-    <BookForm onSubmit={handleSave} book={editingBook} onCancel={handleCancelEdit}/>
-    <BookList books={sortedBooks} onEdit={handleEdit} onDelete={handleDelete} />
-    <h2 className="text-xl font-semibold mt-8 mb-2">Loan Management</h2>
-    <LoanForm onSubmit={handleSaveLoan} books={books} loan={editingLoan} onCancel={handleCancelLoanEdit}/>
-    <LoanList loans={sortedLoans} books={books} onEdit={setEditingLoan} onDelete={handleDeleteLoan} onReturn={handleReturnLoan} />
-    <button
-      onClick={() => {
-        localStorage.removeItem("librarianUser");
-        window.location.href = "/";
-      }}
-      className="text-sm text-red-600 underline mt-4"
-    >
-      Logout
-    </button>
-  </div>
-);}
+    <div className="max-w-5xl mx-auto px-4 py-6 space-y-8">
+      <header className="flex justify-between items-center border-b pb-4">
+        <h1 className="text-3xl font-bold text-gray-800">📚 Librarian Dashboard</h1>
+        <button
+          onClick={() => {
+            localStorage.removeItem("librarianUser");
+            window.location.href = "/";
+          }}
+          className="text-sm text-red-600 hover:underline"
+        >
+          Logout
+        </button>
+      </header>
+
+      <section>
+        <h2 className="text-xl font-semibold mb-3">Search Books</h2>
+        <input
+          type="text"
+          placeholder="Search by title, author, genre, or ISBN"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full p-2 border rounded shadow-sm"
+        />
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold mb-3">Manage Books</h2>
+        <BookForm onSubmit={handleSave} book={editingBook} onCancel={handleCancelEdit}/>
+        <BookList books={sortedBooks} onEdit={handleEdit} onDelete={handleDelete} />
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold mb-3">Loan Management</h2>
+        <LoanForm onSubmit={handleSaveLoan} books={books} loan={editingLoan} onCancel={handleCancelLoanEdit}/>
+        <LoanList
+          loans={sortedLoans}
+          books={books}
+          onEdit={setEditingLoan}
+          onDelete={handleDeleteLoan}
+          onReturn={handleReturnLoan}
+        />
+      </section>
+    </div>
+  );
+}

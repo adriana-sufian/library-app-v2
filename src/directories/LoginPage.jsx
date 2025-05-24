@@ -28,36 +28,49 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Library Login</h1>
+    <div className="max-w-md mx-auto px-4 py-6">
+      <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">📚 Library Login</h1>
 
-      <div className="mb-4">
-        <label className="block mb-2 font-semibold">Role:</label>
-        <select value={role} onChange={(e) => setRole(e.target.value)} className="border p-2 w-full">
-          <option value="librarian">Librarian</option>
-        </select>
+      <div className="mx-auto w-72 space-y-4">
+        {/* Inline Role Selector */}
+        <div className="flex items-center gap-2">
+          <label className="font-semibold text-gray-700">Role:</label>
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="flex-1 p-2 border rounded shadow-sm"
+          >
+            <option value="librarian">Librarian</option>
+          </select>
+        </div>
+
+        {/* Input Fields */}
+        <input
+          name="username"
+          placeholder="Username"
+          value={credentials.username}
+          onChange={handleChange}
+          className="w-full p-2 border rounded shadow-sm"
+        />
+
+        <input
+          name="password"
+          placeholder="Password"
+          type="password"
+          value={credentials.password}
+          onChange={handleChange}
+          className="w-full p-2 border rounded shadow-sm"
+        />
+
+        {/* Login Button */}
+        <button
+          onClick={handleLogin}
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+        >
+          Login
+        </button>
       </div>
-
-      <input
-        name="username"
-        placeholder={role === "librarian" ? "Username" : "Username"}
-        value={credentials.username}
-        onChange={handleChange}
-        className="border p-2 w-full mb-2"
-      />
-
-      <input
-        name="password"
-        placeholder={role === "librarian" ? "Password" : "Password"}
-        value={credentials.password}
-        type="password"
-        onChange={handleChange}
-        className="border p-2 w-full mb-4"
-      />
-
-      <button onClick={handleLogin} className="bg-blue-600 text-white px-4 py-2 rounded w-full">
-        Login
-      </button>
     </div>
   );
+
 }
