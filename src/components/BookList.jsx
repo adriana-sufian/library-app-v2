@@ -4,7 +4,7 @@ export default function BookList({ books, onEdit, onDelete }) {
       {books.map((book) => (
         <div key={book.id} className="border p-4 rounded mb-2 bg-gray-50">
           <h3 className="font-bold">{book.title} ({book.year})</h3>
-          <p>{book.author} | Genre: {book.genre}</p>
+          <p>{book.author} | Genre: {book.genre} | ISBN: {book.isbn}</p>
           <p> Total Copies: {book.totalCopies} | On Hold Copies: {book.onHoldCopies || 0} | Available Copies: {book.totalCopies - (book.onHoldCopies || 0)}</p>
           <p>Status: {book.available ? "Available" : "Unavailable"}</p>
           <div className="space-x-2 mt-2">
