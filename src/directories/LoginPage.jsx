@@ -23,6 +23,7 @@ export default function Login() {
       navigate("/librarian");
     } else {
       alert("Invalid librarian credentials.");
+      setCredentials({ username: "", password: "" });
     }
   };
 

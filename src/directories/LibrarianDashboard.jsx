@@ -139,5 +139,14 @@ return (
     <h2 className="text-xl font-semibold mt-8 mb-2">Loan Management</h2>
     <LoanForm onSubmit={handleSaveLoan} books={books} loan={editingLoan} onCancel={handleCancelLoanEdit}/>
     <LoanList loans={sortedLoans} books={books} onEdit={setEditingLoan} onDelete={handleDeleteLoan} onReturn={handleReturnLoan} />
+    <button
+      onClick={() => {
+        localStorage.removeItem("librarianUser");
+        window.location.href = "/";
+      }}
+      className="text-sm text-red-600 underline mt-4"
+    >
+      Logout
+    </button>
   </div>
 );}
