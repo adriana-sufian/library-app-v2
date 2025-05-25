@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getBooks, saveBooks, recalculateBookHoldCounts, seedBooks } from "../utils/dataService";
 import { getLoans, saveLoans } from "../utils/loanService";
 import BookForm from "../components/BookForm";
@@ -11,7 +11,7 @@ export default function LibrarianDashboard() {
   useEffect(() => {
     document.title = "Librarian Dashboard";
   }, []);
-  
+
   const [books, setBooks] = useState([]);
   const [editingBook, setEditingBook] = useState(null);
 
@@ -38,8 +38,11 @@ export default function LibrarianDashboard() {
     saveBooks(updated);
     setEditingBook(null);
   };
-
-  const handleEdit = (book) => setEditingBook(book);
+  const formWrapperRef = useRef(null);
+  const handleEdit = (book) => {
+    setEditingBook(book); 
+    formWrapperRef.current?.scrollIntoView({ behavior: "smooth" });
+  }
   const handleDelete = (id) => {
     const updated = books.filter(b => b.id !== id);
     setBooks(updated);
@@ -123,6 +126,12 @@ export default function LibrarianDashboard() {
   // edit , cancel list
   const handleCancelEdit = () => setEditingBook(null);
   const handleCancelLoanEdit = () => setEditingLoan(null);
+  
+  const loanFormRef = useRef(null);
+  const handleEditLoan = (loan) => {
+    setEditingLoan(loan);
+    loanFormRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   // sort book list by genre
   const sortedBooks = [...books]
@@ -197,23 +206,28 @@ export default function LibrarianDashboard() {
       {/* Tab Content */}
       {activeTab === "books" && (
         <section className="space-y-4">
-          <BookForm onSubmit={handleSave} book={editingBook} onCancel={handleCancelEdit} />
+          <div ref={formWrapperRef}>
+            <BookForm onSubmit={handleSave} book={editingBook} onCancel={handleCancelEdit} />
+          </div>
           <BookList books={sortedBooks} onEdit={handleEdit} onDelete={handleDelete} />
         </section>
       )}
 
       {activeTab === "loans" && (
         <section className="space-y-4">
-          <LoanForm
+          <div ref={loanFormRef}>
+            <LoanForm
             onSubmit={handleSaveLoan}
             books={books}
             loan={editingLoan}
             onCancel={handleCancelLoanEdit}
           />
+          </div>
+          
           <LoanList
             loans={sortedLoans}
             books={books}
-            onEdit={setEditingLoan}
+            onEdit={handleEditLoan}
             onDelete={handleDeleteLoan}
             onReturn={handleReturnLoan}
           />
