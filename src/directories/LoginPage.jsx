@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function Login() {
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
+
   const navigate = useNavigate();
   const [role, setRole] = useState("member");
   const [credentials, setCredentials] = useState({ username: "", password: "" });

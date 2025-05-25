@@ -8,6 +8,10 @@ import LoanList from "../components/LoanList";
 import { v4 as uuidv4 } from "uuid";
 
 export default function LibrarianDashboard() {
+  useEffect(() => {
+    document.title = "Librarian Dashboard";
+  }, []);
+  
   const [books, setBooks] = useState([]);
   const [editingBook, setEditingBook] = useState(null);
 
