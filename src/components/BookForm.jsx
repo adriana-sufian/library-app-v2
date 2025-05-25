@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 
 export default function BookForm({ onSubmit, book, onCancel }) {
   const [form, setForm] = useState({
-    title: "", 
-    author: "", 
-    isbn: "", 
-    year: "", 
-    genre: "", 
-    totalCopies: 1, 
-    available: true
+    title: "",
+    author: "",
+    isbn: "",
+    year: "",
+    genre: "",
+    totalCopies: 1,
+    available: true,
   });
 
   // updates the form when book prop changes
@@ -18,20 +18,23 @@ export default function BookForm({ onSubmit, book, onCancel }) {
     } else {
       // Clear form when no book is being edited (for new books)
       setForm({
-        title: "", 
-        author: "", 
-        isbn: "", 
-        year: "", 
-        genre: "", 
-        totalCopies: 1, 
-        available: true
+        title: "",
+        author: "",
+        isbn: "",
+        year: "",
+        genre: "",
+        totalCopies: 1,
+        available: true,
       });
     }
   }, [book]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setForm(prev => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   // isbn validation
@@ -47,7 +50,14 @@ export default function BookForm({ onSubmit, book, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.title || !form.author || !form.genre || !form.year || !form.isbn || !form.totalCopies) {
+    if (
+      !form.title ||
+      !form.author ||
+      !form.genre ||
+      !form.year ||
+      !form.isbn ||
+      !form.totalCopies
+    ) {
       return alert("Please fill in all required fields.");
     }
 
@@ -145,7 +155,7 @@ export default function BookForm({ onSubmit, book, onCancel }) {
 
         <div className="flex gap-2">
           <button type="submit" className="btn btn-primary">
-            {book ? 'Update' : 'Add Book'}
+            {book ? "Update" : "Add Book"}
           </button>
           {book && (
             <button

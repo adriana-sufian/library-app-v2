@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 export default function Login() {
   useEffect(() => {
     document.title = "Login";
@@ -9,7 +8,10 @@ export default function Login() {
 
   const navigate = useNavigate();
   const [role, setRole] = useState("member");
-  const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -19,7 +21,10 @@ export default function Login() {
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
     const match = users.find(
-      u => u.role === "librarian" && u.username === credentials.username && u.password === credentials.password
+      (u) =>
+        u.role === "librarian" &&
+        u.username === credentials.username &&
+        u.password === credentials.password,
     );
 
     if (match) {
@@ -68,15 +73,10 @@ export default function Login() {
           />
         </div>
 
-        <button
-          onClick={handleLogin}
-          className="btn btn-primary w-full"
-        >
+        <button onClick={handleLogin} className="btn btn-primary w-full">
           Login
         </button>
       </div>
     </div>
   );
-
-
 }

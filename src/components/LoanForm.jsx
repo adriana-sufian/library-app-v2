@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function LoanForm({ onSubmit, books, loan , onCancel
-}) {
+export default function LoanForm({ onSubmit, books, loan, onCancel }) {
   const [form, setForm] = useState({
     bookId: "",
     memberName: "",
@@ -30,12 +29,12 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
   useEffect(() => {
     const date = new Date(form.loanDate);
     date.setDate(date.getDate() + 14);
-    setForm(f => ({ ...f, dueDate: date.toISOString().split("T")[0] }));
+    setForm((f) => ({ ...f, dueDate: date.toISOString().split("T")[0] }));
   }, [form.loanDate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm(f => ({ ...f, [name]: value }));
+    setForm((f) => ({ ...f, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -52,7 +51,10 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card bg-base-100 shadow p-6 space-y-4">
+    <form
+      onSubmit={handleSubmit}
+      className="card bg-base-100 shadow p-6 space-y-4"
+    >
       <div className="flex flex-wrap lg:flex-row gap-4">
         <select
           name="bookId"
@@ -63,11 +65,14 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
         >
           <option value="">Select Book</option>
           {books
-            .filter(b => b.available && (b.totalCopies - (b.onHoldCopies || 0)) > 0)
-            .map(b => (
-              <option key={b.id} value={b.id}>{b.title}</option>
-            ))
-          }
+            .filter(
+              (b) => b.available && b.totalCopies - (b.onHoldCopies || 0) > 0,
+            )
+            .map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.title}
+              </option>
+            ))}
         </select>
 
         <input
@@ -110,16 +115,19 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
 
       <div className="flex flex-wrap gap-2 mt-3 justify-center">
         <button type="submit" className="btn btn-primary flex-1">
-          {loan ? 'Update' : 'Add Loan'}
+          {loan ? "Update" : "Add Loan"}
         </button>
 
         {loan && (
-          <button type="button" onClick={onCancel} className="btn btn-secondary flex-1">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="btn btn-secondary flex-1"
+          >
             Cancel
           </button>
         )}
       </div>
     </form>
   );
-
 }

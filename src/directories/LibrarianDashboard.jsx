@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { getBooks, saveBooks, recalculateBookHoldCounts, seedBooks } from "../utils/dataService";
+import {
+  getBooks,
+  saveBooks,
+  recalculateBookHoldCounts,
+  seedBooks,
+} from "../utils/dataService";
 import { getLoans, saveLoans } from "../utils/loanService";
 import BookForm from "../components/BookForm";
 import BookList from "../components/BookList";
@@ -30,7 +35,7 @@ export default function LibrarianDashboard() {
   const handleSave = (book) => {
     let updated;
     if (book.id) {
-      updated = books.map(b => (b.id === book.id ? book : b));
+      updated = books.map((b) => (b.id === book.id ? book : b));
     } else {
       book.id = uuidv4();
       updated = [...books, book];
@@ -43,11 +48,11 @@ export default function LibrarianDashboard() {
   // scroll to top when edit clicked - book
   const formWrapperRef = useRef(null);
   const handleEdit = (book) => {
-    setEditingBook(book); 
+    setEditingBook(book);
     formWrapperRef.current?.scrollIntoView({ behavior: "smooth" });
-  }
+  };
   const handleDelete = (id) => {
-    const updated = books.filter(b => b.id !== id);
+    const updated = books.filter((b) => b.id !== id);
     setBooks(updated);
     saveBooks(updated);
   };
@@ -55,24 +60,24 @@ export default function LibrarianDashboard() {
   const handleSaveLoan = (loan) => {
     let updated;
     let isNewLoan = false;
-    
+
     if (loan.id) {
       // Editing existing loan
-      updated = loans.map(l => l.id === loan.id ? loan : l);
+      updated = loans.map((l) => (l.id === loan.id ? loan : l));
     } else {
       // Creating new loan
       loan.id = uuidv4();
       updated = [...loans, loan];
       isNewLoan = true;
     }
-    
+
     setLoans(updated);
     saveLoans(updated);
     setEditingLoan(null);
 
     // Update book copies only for NEW loans with Active status
     if (isNewLoan && loan.status === "Active") {
-      const updatedBooks = books.map(book => {
+      const updatedBooks = books.map((book) => {
         if (book.id === loan.bookId && book.copies > 0) {
           const newCopies = book.copies - 1;
           return {
@@ -83,7 +88,7 @@ export default function LibrarianDashboard() {
         }
         return book;
       });
-      
+
       setBooks(updatedBooks);
       saveBooks(updatedBooks);
       const resyncedBooks = recalculateBookHoldCounts();
@@ -92,7 +97,7 @@ export default function LibrarianDashboard() {
   };
 
   const handleDeleteLoan = (id) => {
-    const updated = loans.filter(l => l.id !== id);
+    const updated = loans.filter((l) => l.id !== id);
     setLoans(updated);
     saveLoans(updated);
   };
@@ -100,19 +105,20 @@ export default function LibrarianDashboard() {
   // return loans
   const handleReturnLoan = (loan) => {
     // 1. Update loan status
-    const updatedLoans = loans.map(l =>
-      l.id === loan.id ? { ...l, status: "Returned" } : l
+    const updatedLoans = loans.map((l) =>
+      l.id === loan.id ? { ...l, status: "Returned" } : l,
     );
     setLoans(updatedLoans);
     saveLoans(updatedLoans);
 
     // 2. Increment book copy count
-    const updatedBooks = books.map(b => {
+    const updatedBooks = books.map((b) => {
       if (b.id === loan.bookId) {
-        const newCopies = (b.totalCopies || 0) > 0 ? b.totalCopies : b.copies + 1;
+        const newCopies =
+          (b.totalCopies || 0) > 0 ? b.totalCopies : b.copies + 1;
         return {
           ...b,
-          copies: newCopies,  // legacy field
+          copies: newCopies, // legacy field
           totalCopies: b.totalCopies || newCopies,
         };
       }
@@ -129,7 +135,7 @@ export default function LibrarianDashboard() {
   // edit , cancel list
   const handleCancelEdit = () => setEditingBook(null);
   const handleCancelLoanEdit = () => setEditingLoan(null);
-  
+
   // scroll to top when edit clicked - loan
   const loanFormRef = useRef(null);
   const handleEditLoan = (loan) => {
@@ -139,21 +145,21 @@ export default function LibrarianDashboard() {
 
   // sort book list by genre
   const sortedBooks = [...books]
-  .filter(b => {
-    const term = searchTerm.toLowerCase();
-    return (
-      b.title.toLowerCase().includes(term) ||
-      b.author.toLowerCase().includes(term) ||
-      b.genre.toLowerCase().includes(term) ||
-      b.isbn.toLowerCase().includes(term)
-    );
-  })
-  .sort((a, b) => a.genre.localeCompare(b.genre));
+    .filter((b) => {
+      const term = searchTerm.toLowerCase();
+      return (
+        b.title.toLowerCase().includes(term) ||
+        b.author.toLowerCase().includes(term) ||
+        b.genre.toLowerCase().includes(term) ||
+        b.isbn.toLowerCase().includes(term)
+      );
+    })
+    .sort((a, b) => a.genre.localeCompare(b.genre));
 
   // sort loan list by genre
   const sortedLoans = [...loans].sort((a, b) => {
-  const genreA = books.find(book => book.id === a.bookId)?.genre || "";
-  const genreB = books.find(book => book.id === b.bookId)?.genre || "";
+    const genreA = books.find((book) => book.id === a.bookId)?.genre || "";
+    const genreB = books.find((book) => book.id === b.bookId)?.genre || "";
     return genreA.localeCompare(genreB);
   });
 
@@ -164,8 +170,7 @@ export default function LibrarianDashboard() {
     window.location.href = "/";
   };
 
-
- return (
+  return (
     <div className="max-w-5xl mx-auto px-4 py-6 space-y-6">
       {/* Header */}
       <header className="flex justify-between items-center border-b pb-4">
@@ -212,10 +217,18 @@ export default function LibrarianDashboard() {
         <section className="space-y-4">
           <CollapsibleCard title="Manage Books">
             <div ref={formWrapperRef}>
-              <BookForm onSubmit={handleSave} book={editingBook} onCancel={handleCancelEdit} />
+              <BookForm
+                onSubmit={handleSave}
+                book={editingBook}
+                onCancel={handleCancelEdit}
+              />
             </div>
           </CollapsibleCard>
-          <BookList books={sortedBooks} onEdit={handleEdit} onDelete={handleDelete} />
+          <BookList
+            books={sortedBooks}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
         </section>
       )}
 
@@ -224,11 +237,11 @@ export default function LibrarianDashboard() {
           <CollapsibleCard title="Manage Loans">
             <div ref={loanFormRef}>
               <LoanForm
-              onSubmit={handleSaveLoan}
-              books={books}
-              loan={editingLoan}
-              onCancel={handleCancelLoanEdit}
-            />
+                onSubmit={handleSaveLoan}
+                books={books}
+                loan={editingLoan}
+                onCancel={handleCancelLoanEdit}
+              />
             </div>
           </CollapsibleCard>
           <LoanList

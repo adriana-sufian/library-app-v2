@@ -1,10 +1,11 @@
 import { getLoans } from "./loanService";
 export const getBooks = () => JSON.parse(localStorage.getItem("books")) || [];
-export const saveBooks = (books) => localStorage.setItem("books", JSON.stringify(books));
+export const saveBooks = (books) =>
+  localStorage.setItem("books", JSON.stringify(books));
 
 export const getAvailableBooks = () => {
   const books = JSON.parse(localStorage.getItem("books")) || [];
-  return books.filter(book => {
+  return books.filter((book) => {
     const onHold = book.onHoldCopies || 0;
     const available = (book.totalCopies || 0) - onHold;
     return available > 0;
@@ -16,13 +17,13 @@ export const recalculateBookHoldCounts = () => {
   const loans = getLoans();
   const holdMap = {};
 
-  loans.forEach(l => {
+  loans.forEach((l) => {
     if (l.status === "Active") {
       holdMap[l.bookId] = (holdMap[l.bookId] || 0) + 1;
     }
   });
 
-  const updatedBooks = books.map(b => {
+  const updatedBooks = books.map((b) => {
     const onHold = holdMap[b.id] || 0;
     const isAvailable = (b.totalCopies || 0) - onHold > 0;
 

@@ -21,11 +21,7 @@ export default function CollapsibleCard({ title, children }) {
       >
         {title}
       </button>
-      {open && (
-        <div className="p-4 space-y-4">
-          {children}
-        </div>
-      )}
+      {open && <div className="p-4 space-y-4">{children}</div>}
     </div>
   );
 }
