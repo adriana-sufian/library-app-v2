@@ -148,41 +148,35 @@ export default function LibrarianDashboard() {
   };
 
 
-return (
+ return (
     <div className="max-w-5xl mx-auto px-4 py-6 space-y-6">
       {/* Header */}
       <header className="flex justify-between items-center border-b pb-4">
-        <h1 className="text-3xl font-bold text-gray-800">📚 Librarian Dashboard</h1>
-        <button onClick={logout} className="text-sm text-red-600 hover:underline">
+        <h1 className="text-3xl font-bold">📚 Librarian Dashboard</h1>
+        <button onClick={logout} className="btn btn-sm btn-outline btn-error">
           Logout
         </button>
       </header>
 
       {/* Tabs */}
-      <div className="flex space-x-4 border-b mb-4">
+      <div role="tablist" className="tabs tabs-bordered">
         <button
-          className={`pb-2 px-2 ${
-            activeTab === "books"
-              ? "border-b-2 border-blue-600 text-blue-600 font-semibold"
-              : "text-gray-600 hover:text-blue-500"
-          }`}
+          role="tab"
+          className={`tab ${activeTab === "books" ? "tab-active" : ""}`}
           onClick={() => setActiveTab("books")}
         >
           Manage Books
         </button>
         <button
-          className={`pb-2 px-2 ${
-            activeTab === "loans"
-              ? "border-b-2 border-blue-600 text-blue-600 font-semibold"
-              : "text-gray-600 hover:text-blue-500"
-          }`}
+          role="tab"
+          className={`tab ${activeTab === "loans" ? "tab-active" : ""}`}
           onClick={() => setActiveTab("loans")}
         >
           Loan Management
         </button>
       </div>
 
-      {/* Search (common to both tabs or can be conditional) */}
+      {/* Search (only shown for books) */}
       {activeTab === "books" && (
         <section>
           <h2 className="text-xl font-semibold mb-3">Search Books</h2>
@@ -191,7 +185,7 @@ return (
             placeholder="Search by title, author, genre, or ISBN"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 border rounded shadow-sm"
+            className="input input-bordered w-full"
           />
         </section>
       )}

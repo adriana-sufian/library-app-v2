@@ -29,48 +29,54 @@ export default function Login() {
 
   return (
     <div className="max-w-md mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">📚 Library Login</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">📚 Library Login</h1>
 
       <div className="mx-auto w-72 space-y-4">
         {/* Inline Role Selector */}
-        <div className="flex items-center gap-2">
-          <label className="font-semibold text-gray-700">Role:</label>
+        <div className="form-control">
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            className="flex-1 p-2 border rounded shadow-sm"
+            className="select select-bordered w-full"
           >
             <option value="librarian">Librarian</option>
           </select>
         </div>
 
-        {/* Input Fields */}
-        <input
-          name="username"
-          placeholder="Username"
-          value={credentials.username}
-          onChange={handleChange}
-          className="w-full p-2 border rounded shadow-sm"
-        />
+        {/* Username Field */}
+        <div className="form-control">
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={credentials.username}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+          />
+        </div>
 
-        <input
-          name="password"
-          placeholder="Password"
-          type="password"
-          value={credentials.password}
-          onChange={handleChange}
-          className="w-full p-2 border rounded shadow-sm"
-        />
+        {/* Password Field */}
+        <div className="form-control">
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={credentials.password}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+          />
+        </div>
 
         {/* Login Button */}
         <button
           onClick={handleLogin}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          className="btn btn-primary w-full"
         >
           Login
         </button>
       </div>
     </div>
   );
+
 
 }

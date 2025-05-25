@@ -73,32 +73,92 @@ export default function BookForm({ onSubmit, book, onCancel }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-4 border rounded bg-white shadow">
-      <input name="title" placeholder="Title" value={form.title} onChange={handleChange} required />
-      <input name="author" placeholder="Author" value={form.author} onChange={handleChange} required />
-      <input name="isbn" placeholder="ISBN" value={form.isbn} onChange={handleChange} required />
-      <input name="year" type="number" placeholder="Year" value={form.year} onChange={handleChange} required />
-      <input name="genre" placeholder="Genre" value={form.genre} onChange={handleChange} required />
-      <input name="totalCopies" type="number" min="1" value={form.totalCopies} onChange={handleChange} required />
-      <label>
-        <input type="checkbox" name="available" checked={form.available} onChange={handleChange} /> Available
-      </label>
-      <div >
-        <button 
-          type="submit" 
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          {book ? 'Update' : 'Add Book'}
-        </button>
-        {book && (
-          <button 
-            type="button"
-            onClick={onCancel}
-            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-          >
-            Cancel
+    <form
+      onSubmit={handleSubmit}
+      className="card bg-base-100 shadow p-6 space-y-6"
+    >
+      {/* Inputs in a single horizontal scrollable line */}
+      <div className="flex flex-wrap lg:flex-row gap-4">
+        <input
+          name="title"
+          placeholder="Title"
+          value={form.title}
+          onChange={handleChange}
+          required
+          className="input input-bordered w-44 flex-1"
+        />
+        <input
+          name="author"
+          placeholder="Author"
+          value={form.author}
+          onChange={handleChange}
+          required
+          className="input input-bordered w-44 flex-1"
+        />
+        <input
+          name="isbn"
+          placeholder="ISBN"
+          value={form.isbn}
+          onChange={handleChange}
+          required
+          className="input input-bordered w-30 flex-1"
+        />
+        <input
+          name="year"
+          type="number"
+          placeholder="Year"
+          value={form.year}
+          onChange={handleChange}
+          required
+          className="input input-bordered w-30 flex-1"
+        />
+        <input
+          name="genre"
+          placeholder="Genre"
+          value={form.genre}
+          onChange={handleChange}
+          required
+          className="input input-bordered w-44 flex-1"
+        />
+        <input
+          name="totalCopies"
+          type="number"
+          min="1"
+          placeholder="Total Copies"
+          value={form.totalCopies}
+          onChange={handleChange}
+          required
+          className="input input-bordered w-20 flex-1"
+        />
+      </div>
+
+      {/* Centered Available + Buttons */}
+      <div className="flex flex-wrap items-center justify-center gap-4">
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="available"
+            checked={form.available}
+            onChange={handleChange}
+            className="checkbox"
+          />
+          <span className="label-text">Available</span>
+        </label>
+
+        <div className="flex gap-2">
+          <button type="submit" className="btn btn-primary">
+            {book ? 'Update' : 'Add Book'}
           </button>
-        )}
+          {book && (
+            <button
+              type="button"
+              onClick={onCancel}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
     </form>
   );

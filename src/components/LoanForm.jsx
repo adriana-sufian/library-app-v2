@@ -52,37 +52,77 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border rounded bg-white shadow space-y-4">
-      <select name="bookId" value={form.bookId} onChange={handleChange} required>
-        <option value="">Select Book</option>
+    <form onSubmit={handleSubmit} className="card bg-base-100 shadow p-6 space-y-4">
+      {/* Row 1: Book Selector and Member Name */}
+      <div className="flex flex-wrap lg:flex-row gap-4">
+        <select
+          name="bookId"
+          value={form.bookId}
+          onChange={handleChange}
+          required
+          className="select select-bordered flex-1"
+        >
+          <option value="">Select Book</option>
           {books
             .filter(b => b.available && (b.totalCopies - (b.onHoldCopies || 0)) > 0)
             .map(b => (
               <option key={b.id} value={b.id}>{b.title}</option>
             ))
           }
-      </select>
-      <input name="memberName" placeholder="Member Name" value={form.memberName} onChange={handleChange} required />
-      <input name="loanDate" type="date" value={form.loanDate} onChange={handleChange} required />
-      <input name="dueDate" type="date" value={form.dueDate} disabled />
-      <select name="status" value={form.status} onChange={handleChange}>
-        <option>Active</option>
-      </select>
-      <button 
-      type="submit" 
-      className="bg-blue-500 text-white px-4 py-2"
-      >
-        {loan ? 'Update' : 'Add Loan'}
-      </button>
-      {loan && (
-        <button
-          type="button"
-          onClick={onCancel}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-          >
+        </select>
+
+        <input
+          name="memberName"
+          placeholder="Member Name"
+          value={form.memberName}
+          onChange={handleChange}
+          required
+          className="input input-bordered flex-1"
+        />
+      </div>
+
+      {/* Row 2: Loan Date, Due Date, Status */}
+      <div className="flex flex-wrap lg:flex-row gap-4">
+        <input
+          name="loanDate"
+          type="date"
+          value={form.loanDate}
+          onChange={handleChange}
+          required
+          className="input input-bordered flex-1"
+        />
+
+        <input
+          name="dueDate"
+          type="date"
+          value={form.dueDate}
+          disabled
+          className="input input-bordered flex-1"
+        />
+
+        <select
+          name="status"
+          value={form.status}
+          onChange={handleChange}
+          className="select select-bordered flex-1"
+        >
+          <option>Active</option>
+        </select>
+      </div>
+
+      {/* Buttons: horizontal on desktop, vertical on mobile */}
+      <div className="flex flex-wrap gap-2 mt-3 justify-center">
+        <button type="submit" className="btn btn-primary flex-1">
+          {loan ? 'Update' : 'Add Loan'}
+        </button>
+
+        {loan && (
+          <button type="button" onClick={onCancel} className="btn btn-neutral flex-1">
             Cancel
           </button>
-      )}
+        )}
+      </div>
     </form>
   );
+
 }
