@@ -36,7 +36,6 @@ export default function Login() {
       <h1 className="text-3xl font-bold text-center mb-6">📚 Library Login</h1>
 
       <div className="mx-auto w-72 space-y-4">
-        {/* Inline Role Selector */}
         <div className="form-control">
           <select
             value={role}
@@ -47,7 +46,6 @@ export default function Login() {
           </select>
         </div>
 
-        {/* Username Field */}
         <div className="form-control">
           <input
             type="text"
@@ -59,7 +57,6 @@ export default function Login() {
           />
         </div>
 
-        {/* Password Field */}
         <div className="form-control">
           <input
             type="password"
@@ -71,7 +68,6 @@ export default function Login() {
           />
         </div>
 
-        {/* Login Button */}
         <button
           onClick={handleLogin}
           className="btn btn-primary w-full"

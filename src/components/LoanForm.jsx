@@ -53,7 +53,6 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
 
   return (
     <form onSubmit={handleSubmit} className="card bg-base-100 shadow p-6 space-y-4">
-      {/* Row 1: Book Selector and Member Name */}
       <div className="flex flex-wrap lg:flex-row gap-4">
         <select
           name="bookId"
@@ -81,7 +80,6 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
         />
       </div>
 
-      {/* Row 2: Loan Date, Due Date, Status */}
       <div className="flex flex-wrap lg:flex-row gap-4">
         <input
           name="loanDate"
@@ -110,7 +108,6 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
         </select>
       </div>
 
-      {/* Buttons: horizontal on desktop, vertical on mobile */}
       <div className="flex flex-wrap gap-2 mt-3 justify-center">
         <button type="submit" className="btn btn-primary flex-1">
           {loan ? 'Update' : 'Add Loan'}

@@ -39,6 +39,8 @@ export default function LibrarianDashboard() {
     saveBooks(updated);
     setEditingBook(null);
   };
+
+  // scroll to top when edit clicked - book
   const formWrapperRef = useRef(null);
   const handleEdit = (book) => {
     setEditingBook(book); 
@@ -110,7 +112,7 @@ export default function LibrarianDashboard() {
         const newCopies = (b.totalCopies || 0) > 0 ? b.totalCopies : b.copies + 1;
         return {
           ...b,
-          copies: newCopies,  // optional legacy field
+          copies: newCopies,  // legacy field
           totalCopies: b.totalCopies || newCopies,
         };
       }
@@ -128,6 +130,7 @@ export default function LibrarianDashboard() {
   const handleCancelEdit = () => setEditingBook(null);
   const handleCancelLoanEdit = () => setEditingLoan(null);
   
+  // scroll to top when edit clicked - loan
   const loanFormRef = useRef(null);
   const handleEditLoan = (loan) => {
     setEditingLoan(loan);

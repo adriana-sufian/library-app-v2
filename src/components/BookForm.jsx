@@ -77,7 +77,6 @@ export default function BookForm({ onSubmit, book, onCancel }) {
       onSubmit={handleSubmit}
       className="card bg-base-100 shadow p-6 space-y-6"
     >
-      {/* Inputs in a single horizontal scrollable line */}
       <div className="flex flex-wrap lg:flex-row gap-4">
         <input
           name="title"
@@ -132,7 +131,6 @@ export default function BookForm({ onSubmit, book, onCancel }) {
         />
       </div>
 
-      {/* Centered Available + Buttons */}
       <div className="flex flex-wrap items-center justify-center gap-4">
         <label className="flex items-center gap-2">
           <input
