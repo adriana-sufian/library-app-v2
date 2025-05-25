@@ -140,50 +140,87 @@ export default function LibrarianDashboard() {
     return genreA.localeCompare(genreB);
   });
 
+  const [activeTab, setActiveTab] = useState("books");
+
+  const logout = () => {
+    localStorage.removeItem("librarianUser");
+    window.location.href = "/";
+  };
+
 
 return (
-    <div className="max-w-5xl mx-auto px-4 py-6 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 py-6 space-y-6">
+      {/* Header */}
       <header className="flex justify-between items-center border-b pb-4">
         <h1 className="text-3xl font-bold text-gray-800">📚 Librarian Dashboard</h1>
-        <button
-          onClick={() => {
-            localStorage.removeItem("librarianUser");
-            window.location.href = "/";
-          }}
-          className="text-sm text-red-600 hover:underline"
-        >
+        <button onClick={logout} className="text-sm text-red-600 hover:underline">
           Logout
         </button>
       </header>
 
-      <section>
-        <h2 className="text-xl font-semibold mb-3">Search Books</h2>
-        <input
-          type="text"
-          placeholder="Search by title, author, genre, or ISBN"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 border rounded shadow-sm"
-        />
-      </section>
+      {/* Tabs */}
+      <div className="flex space-x-4 border-b mb-4">
+        <button
+          className={`pb-2 px-2 ${
+            activeTab === "books"
+              ? "border-b-2 border-blue-600 text-blue-600 font-semibold"
+              : "text-gray-600 hover:text-blue-500"
+          }`}
+          onClick={() => setActiveTab("books")}
+        >
+          Manage Books
+        </button>
+        <button
+          className={`pb-2 px-2 ${
+            activeTab === "loans"
+              ? "border-b-2 border-blue-600 text-blue-600 font-semibold"
+              : "text-gray-600 hover:text-blue-500"
+          }`}
+          onClick={() => setActiveTab("loans")}
+        >
+          Loan Management
+        </button>
+      </div>
 
-      <section>
-        <h2 className="text-xl font-semibold mb-3">Manage Books</h2>
-        <BookForm onSubmit={handleSave} book={editingBook} onCancel={handleCancelEdit}/>
-        <BookList books={sortedBooks} onEdit={handleEdit} onDelete={handleDelete} />
-      </section>
+      {/* Search (common to both tabs or can be conditional) */}
+      {activeTab === "books" && (
+        <section>
+          <h2 className="text-xl font-semibold mb-3">Search Books</h2>
+          <input
+            type="text"
+            placeholder="Search by title, author, genre, or ISBN"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-2 border rounded shadow-sm"
+          />
+        </section>
+      )}
 
-      <section>
-        <h2 className="text-xl font-semibold mb-3">Loan Management</h2>
-        <LoanForm onSubmit={handleSaveLoan} books={books} loan={editingLoan} onCancel={handleCancelLoanEdit}/>
-        <LoanList
-          loans={sortedLoans}
-          books={books}
-          onEdit={setEditingLoan}
-          onDelete={handleDeleteLoan}
-          onReturn={handleReturnLoan}
-        />
-      </section>
+      {/* Tab Content */}
+      {activeTab === "books" && (
+        <section className="space-y-4">
+          <BookForm onSubmit={handleSave} book={editingBook} onCancel={handleCancelEdit} />
+          <BookList books={sortedBooks} onEdit={handleEdit} onDelete={handleDelete} />
+        </section>
+      )}
+
+      {activeTab === "loans" && (
+        <section className="space-y-4">
+          <LoanForm
+            onSubmit={handleSaveLoan}
+            books={books}
+            loan={editingLoan}
+            onCancel={handleCancelLoanEdit}
+          />
+          <LoanList
+            loans={sortedLoans}
+            books={books}
+            onEdit={setEditingLoan}
+            onDelete={handleDeleteLoan}
+            onReturn={handleReturnLoan}
+          />
+        </section>
+      )}
     </div>
   );
 }
