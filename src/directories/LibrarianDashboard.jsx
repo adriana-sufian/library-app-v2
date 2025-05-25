@@ -5,6 +5,7 @@ import BookForm from "../components/BookForm";
 import BookList from "../components/BookList";
 import LoanForm from "../components/LoanForm";
 import LoanList from "../components/LoanList";
+import CollapsibleCard from "../components/CollapsibleCard";
 import { v4 as uuidv4 } from "uuid";
 
 export default function LibrarianDashboard() {
@@ -206,24 +207,27 @@ export default function LibrarianDashboard() {
       {/* Tab Content */}
       {activeTab === "books" && (
         <section className="space-y-4">
-          <div ref={formWrapperRef}>
-            <BookForm onSubmit={handleSave} book={editingBook} onCancel={handleCancelEdit} />
-          </div>
+          <CollapsibleCard title="Manage Books">
+            <div ref={formWrapperRef}>
+              <BookForm onSubmit={handleSave} book={editingBook} onCancel={handleCancelEdit} />
+            </div>
+          </CollapsibleCard>
           <BookList books={sortedBooks} onEdit={handleEdit} onDelete={handleDelete} />
         </section>
       )}
 
       {activeTab === "loans" && (
         <section className="space-y-4">
-          <div ref={loanFormRef}>
-            <LoanForm
-            onSubmit={handleSaveLoan}
-            books={books}
-            loan={editingLoan}
-            onCancel={handleCancelLoanEdit}
-          />
-          </div>
-          
+          <CollapsibleCard title="Manage Loans">
+            <div ref={loanFormRef}>
+              <LoanForm
+              onSubmit={handleSaveLoan}
+              books={books}
+              loan={editingLoan}
+              onCancel={handleCancelLoanEdit}
+            />
+            </div>
+          </CollapsibleCard>
           <LoanList
             loans={sortedLoans}
             books={books}
