@@ -10,7 +10,7 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
     status: "Active",
   });
 
-  // This useEffect updates the form when loan prop changes (for editing)
+  // updates the form when loan prop changes (for editing)
   useEffect(() => {
     if (loan) {
       setForm(loan);
@@ -26,7 +26,7 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
     }
   }, [loan]);
 
-  // This useEffect calculates due date when loan date changes
+  // calculates due date when loan date changes
   useEffect(() => {
     const date = new Date(form.loanDate);
     date.setDate(date.getDate() + 14);
@@ -56,7 +56,7 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
       <select name="bookId" value={form.bookId} onChange={handleChange} required>
         <option value="">Select Book</option>
           {books
-            .filter(b => (b.totalCopies - (b.onHoldCopies || 0)) > 0)
+            .filter(b => b.available && (b.totalCopies - (b.onHoldCopies || 0)) > 0)
             .map(b => (
               <option key={b.id} value={b.id}>{b.title}</option>
             ))
