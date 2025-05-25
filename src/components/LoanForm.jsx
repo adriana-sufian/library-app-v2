@@ -117,7 +117,7 @@ export default function LoanForm({ onSubmit, books, loan , onCancel
         </button>
 
         {loan && (
-          <button type="button" onClick={onCancel} className="btn btn-neutral flex-1">
+          <button type="button" onClick={onCancel} className="btn btn-secondary flex-1">
             Cancel
           </button>
         )}
