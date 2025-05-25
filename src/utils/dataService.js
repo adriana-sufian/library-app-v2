@@ -22,10 +22,16 @@ export const recalculateBookHoldCounts = () => {
     }
   });
 
-  const updatedBooks = books.map(b => ({
-    ...b,
-    onHoldCopies: holdMap[b.id] || 0,
-  }));
+  const updatedBooks = books.map(b => {
+    const onHold = holdMap[b.id] || 0;
+    const isAvailable = (b.totalCopies || 0) - onHold > 0;
+
+    return {
+      ...b,
+      onHoldCopies: onHold,
+      available: isAvailable,
+    };
+  });
 
   localStorage.setItem("books", JSON.stringify(updatedBooks));
   return updatedBooks;
