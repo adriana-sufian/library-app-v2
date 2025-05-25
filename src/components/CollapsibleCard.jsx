@@ -4,8 +4,15 @@ export default function CollapsibleCard({ title, children }) {
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
-    const isSmallScreen = window.innerWidth < 768;
-    setOpen(!isSmallScreen);
+    const checkScreenSize = () => {
+      const isSmallScreen = window.innerWidth < 768;
+      setOpen(!isSmallScreen);
+    };
+
+    checkScreenSize();
+
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   return (
